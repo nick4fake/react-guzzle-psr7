@@ -9,7 +9,6 @@ use React\Dns\Resolver\Factory as DnsFactory;
 use React\Dns\Resolver\Resolver as DnsResolver;
 use React\EventLoop\LoopInterface;
 use React\HttpClient\Client as HttpClient;
-use React\HttpClient\Factory as HttpClientFactory;
 use WyriHaximus\React\Guzzle\HttpClient\RequestFactory;
 
 class HttpClientAdapter
@@ -64,10 +63,7 @@ class HttpClientAdapter
     public function setHttpClient(HttpClient $httpClient = null)
     {
         if (!($httpClient instanceof HttpClient)) {
-            $this->setDnsResolver($this->dnsResolver);
-
-            $factory = new HttpClientFactory();
-            $httpClient = $factory->create($this->loop, $this->dnsResolver);
+            $httpClient = new HttpClient($this->loop);
         }
 
         $this->httpClient = $httpClient;
